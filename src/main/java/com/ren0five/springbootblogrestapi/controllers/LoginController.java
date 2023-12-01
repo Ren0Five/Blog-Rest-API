@@ -3,10 +3,9 @@ package com.ren0five.springbootblogrestapi.controllers;
 import com.ren0five.springbootblogrestapi.DTOs.CreateBlogAccountDTO;
 import com.ren0five.springbootblogrestapi.DTOs.LoginDTO;
 import com.ren0five.springbootblogrestapi.processors.LoginProcessor;
-import com.ren0five.springbootblogrestapi.services.BlogAccountCreationService;
+import com.ren0five.springbootblogrestapi.servicesImpl.BlogAccountCreationServiceImpl;
 import com.ren0five.springbootblogrestapi.session.LoggedInAccountsSessionManagement;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -14,17 +13,17 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/")
 public class LoginController {
 
-    private final BlogAccountCreationService blogAccountCreationService;
+    private final BlogAccountCreationServiceImpl blogAccountCreationServiceImpl;
     private final LoginProcessor loginProcessor;
     private final LoggedInAccountsSessionManagement loggedInAccountsSessionManagement;
 
     public LoginController(
-            BlogAccountCreationService blogAccountCreationService,
+            BlogAccountCreationServiceImpl blogAccountCreationServiceImpl,
             LoginProcessor loginProcessor,
             LoggedInAccountsSessionManagement loggedInAccountsSessionManagement
 
     ){
-        this.blogAccountCreationService = blogAccountCreationService;
+        this.blogAccountCreationServiceImpl = blogAccountCreationServiceImpl;
         this.loginProcessor = loginProcessor;
         this.loggedInAccountsSessionManagement = loggedInAccountsSessionManagement;
     }
@@ -61,7 +60,7 @@ public class LoginController {
     public ResponseEntity<String> signUp(
             @RequestBody CreateBlogAccountDTO createBlogAccountDTO
             ){
-        String response = this.blogAccountCreationService.createAccount(createBlogAccountDTO)?
+        String response = this.blogAccountCreationServiceImpl.createAccount(createBlogAccountDTO)?
                 "Account creation successful":
                 "Account already Exists";
         return ResponseEntity.status(200).body(response);

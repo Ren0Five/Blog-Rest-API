@@ -3,7 +3,7 @@ package com.ren0five.springbootblogrestapi.processors;
 import com.ren0five.springbootblogrestapi.models.BlogAccount;
 import com.ren0five.springbootblogrestapi.repositories.BlogAccountRepository;
 import com.ren0five.springbootblogrestapi.session.LoggedInAccountsSessionManagement;
-import com.ren0five.springbootblogrestapi.services.PasswordService;
+import com.ren0five.springbootblogrestapi.servicesImpl.PasswordServiceImpl;
 import org.springframework.stereotype.Component;
 import org.springframework.web.context.annotation.RequestScope;
 
@@ -30,7 +30,7 @@ public class LoginProcessor {
        if(blogAccount.isEmpty())
            return isValid;
         if(blogAccount.get(0).getEmail().equals(email) &&
-                PasswordService.checkPassword(password, blogAccount.get(0).getPassword())) {
+                PasswordServiceImpl.checkPassword(password, blogAccount.get(0).getPassword())) {
             System.out.println(blogAccount.get(0) + "logged in!");
             isValid = true;
             setSessionAccount(blogAccount.get(0));

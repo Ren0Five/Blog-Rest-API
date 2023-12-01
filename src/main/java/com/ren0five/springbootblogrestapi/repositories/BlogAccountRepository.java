@@ -17,7 +17,6 @@ public interface BlogAccountRepository extends CrudRepository<BlogAccount, Long>
     @Query("SELECT * FROM BlogAccounts WHERE email = :email")
     List<BlogAccount> getBlogAccountByEmail(String email);
 
-
     @Query("SELECT COUNT(*) FROM BlogAccounts WHERE email = :value")
     int countEmail(String value);
 }

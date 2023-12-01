@@ -3,7 +3,7 @@ package com.ren0five.springbootblogrestapi.controllers;
 
 import com.ren0five.springbootblogrestapi.DTOs.BlogPostDTO;
 import com.ren0five.springbootblogrestapi.DTOs.EditBlogPostDTO;
-import com.ren0five.springbootblogrestapi.services.BlogPostingService;
+import com.ren0five.springbootblogrestapi.servicesImpl.BlogPostingServiceImpl;
 import com.ren0five.springbootblogrestapi.session.LoggedInAccountsSessionManagement;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -13,15 +13,15 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 public class BlogsController {
 
-    private final BlogPostingService blogPostingService;
+    private final BlogPostingServiceImpl blogPostingServiceImpl;
     private final LoggedInAccountsSessionManagement loggedInAccountsSessionManagement;
 
 
     private BlogsController(
-            BlogPostingService blogPostingService,
+            BlogPostingServiceImpl blogPostingServiceImpl,
             LoggedInAccountsSessionManagement loggedInAccountsSessionManagement
     ){
-        this.blogPostingService = blogPostingService;
+        this.blogPostingServiceImpl = blogPostingServiceImpl;
         this.loggedInAccountsSessionManagement = loggedInAccountsSessionManagement;
     }
 
@@ -30,14 +30,14 @@ public class BlogsController {
     public Iterable<?>viewBlogs(
             @RequestParam(required = false) String author
     ){
-        Iterable<?> blogsOf = author == null ?  blogPostingService.getAllBlogs():
-                                                blogPostingService.getBlogsOf(author);
+        Iterable<?> blogsOf = author == null ?  blogPostingServiceImpl.getAllBlogs():
+                                                blogPostingServiceImpl.getBlogsOf(author);
         return blogsOf;
     }
 
     @GetMapping("/myBlogs")
     public ResponseEntity<Iterable<?>> myBlogs(){
-        Iterable<?> myBlogs = blogPostingService.getBlogsOf(loggedInAccountsSessionManagement.toString());
+        Iterable<?> myBlogs = blogPostingServiceImpl.getBlogsOf(loggedInAccountsSessionManagement.toString());
         return ResponseEntity.status(HttpStatus.OK).body(myBlogs);
     }
 
@@ -48,7 +48,7 @@ public class BlogsController {
     ){
         if(loggedInAccountsSessionManagement.isLoggedIn()) {
             blogPost.setBlogAuthor(loggedInAccountsSessionManagement.toString());
-            blogPostingService.createBlog(blogPost);
+            blogPostingServiceImpl.createBlog(blogPost);
             return ResponseEntity.status(200)
                     .body("The blog is successfully created. You can view it now in the blogs section");
         }
@@ -63,11 +63,11 @@ public class BlogsController {
             if(loggedInAccountsSessionManagement.isLoggedIn()){
                 long id = editBlogPostDTO.getBlogID();
 
-                if(editBlogPostDTO.equals(blogPostingService.getBlog(id))) {
+                if(editBlogPostDTO.equals(blogPostingServiceImpl.getBlog(id))) {
                     return ResponseEntity.status(HttpStatus.NOT_ACCEPTABLE)
                             .body("Objects have same contents so no edit will happen");
                 }
-                blogPostingService.updateBlog(editBlogPostDTO);
+                blogPostingServiceImpl.updateBlog(editBlogPostDTO);
                 return ResponseEntity.status(200)
                         .body("The blog is successfully updated!");
             }
@@ -79,7 +79,7 @@ public class BlogsController {
         @RequestParam long id
     ){
         if(loggedInAccountsSessionManagement.isLoggedIn()) {
-            blogPostingService.deleteBlog(id);
+            blogPostingServiceImpl.deleteBlog(id);
             return ResponseEntity.status(HttpStatus.FORBIDDEN).body("Blog successfully deleted!");
         }
         return ResponseEntity.status(HttpStatus.FORBIDDEN).body("Forbidden...Please Log in");

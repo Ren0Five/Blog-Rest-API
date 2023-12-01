@@ -1,4 +1,4 @@
-package com.ren0five.springbootblogrestapi.services;
+package com.ren0five.springbootblogrestapi.servicesImpl;
 
 import com.ren0five.springbootblogrestapi.DTOs.BlogPostDTO;
 import com.ren0five.springbootblogrestapi.DTOs.BlogTitleAndAuthorDTO;
@@ -6,19 +6,18 @@ import com.ren0five.springbootblogrestapi.DTOs.EditBlogPostDTO;
 import com.ren0five.springbootblogrestapi.exceptions.NoBlogDataFoundException;
 import com.ren0five.springbootblogrestapi.models.BlogPost;
 import com.ren0five.springbootblogrestapi.repositories.BlogRepository;
+import com.ren0five.springbootblogrestapi.servicesImpl.servicesInterfaces.BlogPostingService;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.sql.Date;
 import java.util.List;
-import java.util.NoSuchElementException;
 
 @Service
-public class BlogPostingService {
+public class BlogPostingServiceImpl implements BlogPostingService {
 
     private BlogRepository blogRepository;
 
-    public BlogPostingService(BlogRepository blogRepository){
+    public BlogPostingServiceImpl(BlogRepository blogRepository){
         this.blogRepository = blogRepository;
     }
 

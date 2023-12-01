@@ -1,14 +1,15 @@
-package com.ren0five.springbootblogrestapi.services;
+package com.ren0five.springbootblogrestapi.servicesImpl;
 
 import com.ren0five.springbootblogrestapi.DTOs.CreateBlogAccountDTO;
 import com.ren0five.springbootblogrestapi.repositories.BlogAccountRepository;
+import com.ren0five.springbootblogrestapi.servicesImpl.servicesInterfaces.BlogAccountCreationService;
 import org.springframework.stereotype.Service;
 
 @Service
-public class BlogAccountCreationService {
+public class BlogAccountCreationServiceImpl implements BlogAccountCreationService {
 
     private final BlogAccountRepository blogAccountRepository;
-    public BlogAccountCreationService(BlogAccountRepository blogAccountRepository){
+    public BlogAccountCreationServiceImpl(BlogAccountRepository blogAccountRepository){
         this.blogAccountRepository = blogAccountRepository;
     }
 
@@ -22,7 +23,7 @@ public class BlogAccountCreationService {
                 createBlogAccountDTO.getFirstName(),
                 createBlogAccountDTO.getLastName(),
                 createBlogAccountDTO.getEmail(),
-                PasswordService.hashPassword(createBlogAccountDTO.getPassword()));
+                PasswordServiceImpl.hashPassword(createBlogAccountDTO.getPassword()));
 
         return true;
     }
